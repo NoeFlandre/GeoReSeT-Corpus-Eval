@@ -72,6 +72,7 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "geopandas" },
+    { name = "pandas" },
     { name = "pyarrow" },
     { name = "rasterio" },
 ]
@@ -79,6 +80,7 @@ dependencies = [
 [package.metadata]
 requires-dist = [
     { name = "geopandas", specifier = ">=1.2.0" },
+    { name = "pandas", specifier = ">=3.1.0" },
     { name = "pyarrow", specifier = ">=26.0.0" },
     { name = "rasterio", specifier = ">=1.5.2" },
 ]

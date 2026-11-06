@@ -26,7 +26,7 @@ def main() -> None:
     lats = [lat for lon, lat in PLACES.values()]
 
     with rasterio.open(EUNIS_TIF) as src:
-        xs, ys = transform("EPSG:4326", src.crs, lons, lats) # converting the lon, lat in meters
+        xs, ys = transform("EPSG:4326", src.crs, lons, lats) # converting the lon, lat in the raster's CRS
         location_pairs_in_meters = zip(xs, ys) # the location pairs in meters
         values = src.sample(location_pairs_in_meters)
 
