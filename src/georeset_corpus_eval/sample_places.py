@@ -26,8 +26,9 @@ def main() -> None:
     lats = [lat for lon, lat in PLACES.values()]
 
     with rasterio.open(EUNIS_TIF) as src:
-        xs, ys = transform("EPSG:4326", src.crs, lons, lats)
-        values = src.sample(zip(xs, ys))
+        xs, ys = transform("EPSG:4326", src.crs, lons, lats) # converting the lon, lat in meters
+        location_pairs_in_meters = zip(xs, ys) # the location pairs in meters
+        values = src.sample(location_pairs_in_meters)
 
         for name, x, y, value in zip(PLACES, xs, ys, values):
             code = int(value[0])

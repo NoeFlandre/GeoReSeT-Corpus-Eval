@@ -15,7 +15,5 @@ def main() -> None:
     print(f"Number of continents: {photos["continent"].nunique()}")
     print(f"Number of missing (lat, lon): {photos[["lat", "lon"]].isna().sum()}")
 
-
-
 if __name__ == "__main__":
     main()
