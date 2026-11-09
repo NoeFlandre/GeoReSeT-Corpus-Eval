@@ -13,5 +13,11 @@ with rasterio.open(EUNIS_TIF) as src:
 
     mask = geometry_mask([square], out_shape = pixels.shape, transform=src.window_transform(window), invert=True)
     inside = pixels[mask]
+
+    valid = inside[inside != 65535]
+    print(valid.size)
+
     values, counts = np.unique(inside, return_counts=True)
-    print(values, counts)
+    shares = counts / counts.sum()
+    print(f"Here are the values present in this geometry: {values}")
+    print(f"Here are the shares of these values in this geometry: {shares.round(3)}")
