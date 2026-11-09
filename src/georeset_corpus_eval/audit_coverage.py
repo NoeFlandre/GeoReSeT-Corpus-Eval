@@ -3,6 +3,7 @@ import rasterio
 import math
 from rasterio.warp import transform
 from georeset_corpus_eval.config import PHOTOS_DIR, EUNIS_TIF
+from georeset_corpus_eval.raster import coordinates_finite_and_in_bounds
 
 COLUMNS = ["lat", "lon"]
 
@@ -22,18 +23,13 @@ def main():
         print(f"First three latitude in meters: {ys[:3]}")
         print(f"Bounds: {bounds}")
 
-        xs_in_bounds = [bounds.left <= x <= bounds.right for x in xs]
-        ys_in_bounds = [bounds.bottom <= y <= bounds.top for y in ys]
-
-        valid = [math.isfinite(x) and math.isfinite(y) for x, y in zip(xs, ys)]
-        inside = [v and x and y for v, x, y in zip(valid, xs_in_bounds, ys_in_bounds)]
+        inside, valid = coordinates_finite_and_in_bounds(xs, ys, bounds)
 
         missing_count = len(valid) - sum(valid)
         inside_count = sum(inside)
         outside_count = sum(valid) - inside_count
 
-        print(f"Are the first three longitudes in bounds? {xs_in_bounds[:3]}")
-        print(f"Are the first three latitudes in bounds? {ys_in_bounds[:3]}")
+
         print(f"Are the first three photos in bounds? {inside[:3]}")
 
         print(f"How many photos without coordinates throughout the dataset? {missing_count}")
