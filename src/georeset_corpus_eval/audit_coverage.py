@@ -1,6 +1,5 @@
 import pandas as pd
 import rasterio
-import math
 from rasterio.warp import transform
 from georeset_corpus_eval.config import PHOTOS_DIR, EUNIS_TIF
 from georeset_corpus_eval.raster import coordinates_finite_and_in_bounds

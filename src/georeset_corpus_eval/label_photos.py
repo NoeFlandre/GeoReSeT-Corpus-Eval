@@ -1,5 +1,4 @@
 import rasterio
-import math
 import pandas as pd
 
 from rasterio.warp import transform
