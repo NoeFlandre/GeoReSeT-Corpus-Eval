@@ -1,4 +1,10 @@
 import math
+import csv
+from georeset_corpus_eval.config import EUNIS_LEGEND
+
+def load_legend() -> dict[int, str]:
+    with open(EUNIS_LEGEND, newline="") as f:
+        return {int(row["Code"]): row["Label"] for row in csv.DictReader(f)}
 
 def coordinates_finite_and_in_bounds(xs, ys, bounds):
     xs_in_bounds = [bounds.left <= x < bounds.right for x in xs]

@@ -4,7 +4,7 @@ import pandas as pd
 from rasterio.warp import transform
 from rasterio.transform import rowcol
 from georeset_corpus_eval.config import PHOTOS_DIR, EUNIS_TIF, DATA
-from georeset_corpus_eval.sample_places import load_legend
+from georeset_corpus_eval.raster import load_legend
 from georeset_corpus_eval.raster import coordinates_finite_and_in_bounds
 
 COLUMNS = ["photo_id", "lat", "lon"]
@@ -30,10 +30,15 @@ def main():
         codes = band[rows, cols]
         labels = [legend.get(int(code)) for code in codes]
 
+        code_by_row = [None] * len(dataset)
         label_by_row = [None] * len(dataset)
-        for i, label in zip(inside_rows, labels):
+
+        for i, code, label in zip(inside_rows, codes, labels):
+            code_by_row[i] = code
             label_by_row[i] = label
-        dataset["label"] = label_by_row
+        dataset["eunis_code"] = code_by_row
+        dataset["eunis_label"] = label_by_row
+
 
         OUTPUT.parent.mkdir(parents=True, exist_ok=True)
         dataset.to_parquet(OUTPUT)

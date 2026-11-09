@@ -1,10 +1,10 @@
-import csv
 
 import rasterio
 from rasterio.warp import transform
 
 
 from georeset_corpus_eval.config import EUNIS_LEGEND, EUNIS_TIF
+from georeset_corpus_eval.raster import load_legend
 
 PLACES = {
     "Paris centre": (2.3488, 48.8534),
@@ -14,10 +14,6 @@ PLACES = {
     "Bay of Biscay": (-5.0000, 46.0000),
     "Moscow": (37.6176, 55.7558),
 }
-
-def load_legend() -> dict[int, str]:
-    with open(EUNIS_LEGEND, newline="") as f:
-        return {int(row["Code"]): row["Label"] for row in csv.DictReader(f)}
 
 def main() -> None:
     legend = load_legend()
