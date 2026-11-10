@@ -5,6 +5,8 @@ from shapely.ops import transform
 from georeset_corpus_eval.config import EUNIS_LEGEND
 from rasterio.features import geometry_window, geometry_mask
 
+NODATA = 65535
+
 
 def load_legend() -> dict[int, str]:
     with open(EUNIS_LEGEND, newline="") as f:
@@ -33,9 +35,12 @@ def compute_label_shares_polygon_raster(src, polygon, legend):
     mask = geometry_mask([polygon], out_shape = pixels.shape, transform=src.window_transform(window), invert=True)
     inside = pixels[mask]
 
-    valid = inside[inside != 65535]
-    if len(valid) == 0:
-        return None
+    if inside.size == 0:
+        return None, "no_pixel_centre"
+
+    valid = inside[inside != NODATA]
+    if valid.size == 0:
+        return None, "all_nodata"
 
     values, counts = np.unique(valid, return_counts=True)
     shares = counts / counts.sum()
@@ -45,4 +50,4 @@ def compute_label_shares_polygon_raster(src, polygon, legend):
     max_share_label = legend[max_share_code]
 
 
-    return values, shares, max_share_code, max_share_label
+    return (values, shares, max_share_code, max_share_label), None
