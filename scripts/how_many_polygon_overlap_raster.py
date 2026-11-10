@@ -6,11 +6,9 @@ from pathlib import Path
 from pyproj import Transformer
 
 from georeset_corpus_eval.config import EUNIS_TIF
+from georeset_corpus_eval.raster import overlaps_raster
 
-def overlaps_raster(g, to_crs, reference_bounds):
-    r = reference_bounds
-    x0, y0, x1, y1 = transform(to_crs, g).bounds
-    return x0 < r.right and x1 > r.left and y0 < r.top and y1 > r.bottom
+
 
 def main():
 
